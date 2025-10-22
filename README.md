@@ -1,70 +1,171 @@
-# Getting Started with Create React App
+# EmoTrack - Эмоциональный трекер
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Современное MVP приложение для отслеживания психо-эмоционального состояния пользователя с пастельным дизайном, вдохновлённым природой.
 
-## Available Scripts
+## 🌱 Особенности
 
-In the project directory, you can run:
+- **Интуитивный чек-ап эмоций** - отмечайте своё состояние с помощью эмодзи и оценок
+- **История состояний** - просматривайте и фильтруйте предыдущие записи
+- **Аналитика с графиками** - отслеживайте тенденции через визуализацию данных
+- **Тёмная и светлая тема** - переключайтесь между темами для комфорта
+- **Адаптивный дизайн** - работает на мобильных и десктопных устройствах
+- **Локальное хранение** - все данные сохраняются в браузере
 
-### `npm start`
+## 🎨 Дизайн
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Приложение использует пастельную палитру, вдохновлённую природой:
+- **Sage** (шалфей) - основной цвет для спокойствия
+- **Lavender** (лаванда) - акцентный цвет для гармонии  
+- **Peach** (персик) - тёплые акценты
+- **Mint** (мята) - свежие акценты
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Технологии
 
-### `npm test`
+- **React 19** с TypeScript
+- **TailwindCSS** для стилизации
+- **React Router** для навигации
+- **Recharts** для графиков
+- **Lucide React** для иконок
+- **LocalStorage** для хранения данных
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📱 Функции MVP
 
-### `npm run build`
+### ✅ Реализовано
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Регистрация и авторизация**
+   - Форма регистрации с валидацией
+   - Авторизация через email/пароль
+   - Сохранение состояния в localStorage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Чек-ап эмоционального состояния**
+   - Выбор эмоции из 8 предустановленных
+   - Оценка настроения, энергии и стресса (1-10)
+   - Заметка "мысль дня"
+   - Сохранение с временной меткой
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **История состояний**
+   - Просмотр всех предыдущих чек-апов
+   - Фильтрация по эмоциям и дате
+   - Поиск по заметкам
+   - Сортировка по времени
 
-### `npm run eject`
+4. **Аналитика**
+   - Графики динамики показателей
+   - Средние значения за период
+   - Распределение эмоций (круговая диаграмма)
+   - Переключение периодов (неделя/месяц/год)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+5. **Настройки**
+   - Переключение темы
+   - Управление профилем
+   - Настройки уведомлений
+   - Выход из аккаунта
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. **Адаптивность**
+   - Мобильная навигация
+   - Отзывчивый дизайн
+   - Оптимизация для всех устройств
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🛠 Установка и запуск
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Установите зависимости:
+```bash
+npm install --legacy-peer-deps
+```
 
-## Learn More
+2. Запустите приложение:
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Откройте [http://localhost:3000](http://localhost:3000) в браузере
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📁 Структура проекта
 
-### Code Splitting
+```
+src/
+├── components/          # React компоненты
+│   ├── AuthForm.tsx    # Форма авторизации
+│   ├── CheckUpForm.tsx # Форма чек-апа
+│   ├── CheckUpHistory.tsx # История состояний
+│   ├── AnalyticsDashboard.tsx # Аналитика
+│   ├── ThemeToggle.tsx # Переключатель темы
+│   └── Layout.tsx      # Основной макет
+├── pages/              # Страницы приложения
+│   ├── LoginPage.tsx   # Страница входа
+│   ├── RegisterPage.tsx # Страница регистрации
+│   ├── CheckUpPage.tsx # Страница чек-апа
+│   ├── HistoryPage.tsx # Страница истории
+│   ├── AnalyticsPage.tsx # Страница аналитики
+│   └── SettingsPage.tsx # Страница настроек
+├── services/           # API сервисы
+│   └── api.ts         # Заглушки API
+├── hooks/             # Пользовательские хуки
+│   └── useLocalStorage.ts # Хук для localStorage
+├── context/            # React контексты
+│   └── AuthContext.tsx # Контекст авторизации
+├── types/             # TypeScript типы
+│   └── index.ts       # Основные типы
+└── App.tsx            # Главный компонент
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🎯 Использование
 
-### Analyzing the Bundle Size
+1. **Регистрация**: Создайте аккаунт с именем, email и паролем
+2. **Чек-ап**: Отмечайте своё эмоциональное состояние ежедневно
+3. **История**: Просматривайте и анализируйте свои записи
+4. **Аналитика**: Изучайте тенденции и закономерности
+5. **Настройки**: Настройте приложение под себя
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔮 Планы развития
 
-### Making a Progressive Web App
+- Интеграция с носимыми устройствами (Apple Watch, Oura, Whoop)
+- AI-рекомендации на основе данных
+- Интеграция с календарём
+- Экспорт данных
+- Синхронизация между устройствами
+- Социальные функции
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📊 Данные
 
-### Advanced Configuration
+Все данные хранятся локально в браузере:
+- `emotrack-user` - текущий пользователь
+- `emotrack-users` - все зарегистрированные пользователи
+- `emotrack-checkups` - все чек-апы
+- `emotrack-reminders` - настройки напоминаний
+- `emotrack-devices` - подключённые устройства
+- `emotrack-theme` - настройки темы
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🎨 Цветовая палитра
 
-### Deployment
+```css
+/* Sage (основной) */
+sage-50: #f7f8f3
+sage-600: #8a9d4f
+sage-900: #4a502b
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+/* Lavender (акцентный) */
+lavender-100: #f3f0f7
+lavender-500: #a894c0
 
-### `npm run build` fails to minify
+/* Peach (тёплый) */
+peach-400: #f4af74
+peach-500: #f19a4e
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+/* Mint (свежий) */
+mint-400: #4ade80
+mint-500: #22c55e
+```
+
+## 🤝 Вклад в проект
+
+Это MVP версия. Для развития проекта можно:
+- Добавить тесты
+- Улучшить типизацию
+- Добавить анимации
+- Расширить аналитику
+- Добавить экспорт данных
+
+---
+
+**EmoTrack** - ваш персональный помощник для эмоционального благополучия 🌱
