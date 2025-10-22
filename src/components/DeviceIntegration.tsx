@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { deviceAPI } from '../services/api';
 import { DeviceIntegration } from '../types';
-import { Apple, Watch, Heart, Zap, Smartphone, Plus, AlertCircle } from 'lucide-react';
+import { Apple, Watch, Heart, Zap, Smartphone, Plus, AlertCircle, Trash2, X } from 'lucide-react';
 
 export function DeviceIntegrationComponent() {
   const { user } = useAuth();
@@ -47,6 +47,17 @@ export function DeviceIntegrationComponent() {
     }
   };
 
+  const handleDeleteDevice = async (deviceId: string) => {
+    if (!user) return;
+    
+    try {
+      await deviceAPI.deleteDevice(user.id, deviceId);
+      setDevices(prev => prev.filter(device => device.id !== deviceId));
+    } catch (error) {
+      console.error('Error deleting device:', error);
+    }
+  };
+
   const getDeviceName = (type: DeviceIntegration['type']) => {
     const names = {
       apple_watch: 'Apple Watch',
@@ -75,23 +86,23 @@ export function DeviceIntegrationComponent() {
   const getDeviceColor = (type: DeviceIntegration['type']) => {
     switch (type) {
       case 'apple_watch':
-        return 'text-gray-600 bg-gray-100';
+        return 'text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-gray-800';
       case 'oura':
-        return 'text-purple-600 bg-purple-100';
+        return 'text-purple-600 bg-purple-100 dark:text-purple-300 dark:bg-purple-900/30';
       case 'whoop':
-        return 'text-orange-600 bg-orange-100';
+        return 'text-orange-600 bg-orange-100 dark:text-orange-300 dark:bg-orange-900/30';
       case 'fitbit':
-        return 'text-blue-600 bg-blue-100';
+        return 'text-blue-600 bg-blue-100 dark:text-blue-300 dark:bg-blue-900/30';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-gray-800';
     }
   };
 
   if (isLoading) {
     return (
       <div className="card text-center">
-        <div className="w-8 h-8 border-2 border-sage-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-sage-600 dark:text-sage-400">Загрузка устройств...</p>
+        <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-dark-300">Загрузка устройств...</p>
       </div>
     );
   }
@@ -101,10 +112,10 @@ export function DeviceIntegrationComponent() {
       {/* Заголовок */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-sage-900 dark:text-sage-50">
+          <h2 className="text-2xl font-bold text-dark-50">
             Устройства
           </h2>
-          <p className="text-sage-600 dark:text-sage-400">
+          <p className="text-dark-300">
             Подключите носимые устройства для автоматического отслеживания
           </p>
         </div>
@@ -120,13 +131,13 @@ export function DeviceIntegrationComponent() {
       {/* Список устройств */}
       {devices.length === 0 ? (
         <div className="card text-center">
-          <div className="w-16 h-16 bg-sage-100 dark:bg-sage-800 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <Smartphone className="w-8 h-8 text-sage-400" />
+          <div className="w-16 h-16 bg-dark-800 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <Smartphone className="w-8 h-8 text-dark-400" />
           </div>
-          <h3 className="text-lg font-semibold text-sage-900 dark:text-sage-50 mb-2">
+          <h3 className="text-lg font-semibold text-dark-50 mb-2">
             Нет подключённых устройств
           </h3>
-          <p className="text-sage-600 dark:text-sage-400 mb-4">
+          <p className="text-dark-300 mb-4">
             Подключите носимое устройство для автоматического отслеживания вашего состояния
           </p>
           <button
@@ -146,27 +157,36 @@ export function DeviceIntegrationComponent() {
                     {getDeviceIcon(device.type)}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sage-900 dark:text-sage-50">
+                    <h3 className="font-semibold text-dark-50">
                       {device.name}
                     </h3>
-                    <p className="text-sm text-sage-600 dark:text-sage-400">
+                    <p className="text-sm text-dark-300">
                       {device.connected ? 'Подключено' : 'Отключено'}
                     </p>
                   </div>
                 </div>
-                <div className={`w-3 h-3 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
+                <div className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
+                  <button
+                    onClick={() => handleDeleteDevice(device.id)}
+                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-colors"
+                    title="Удалить устройство"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-sage-600 dark:text-sage-400">Статус:</span>
-                  <span className={device.connected ? 'text-green-600' : 'text-gray-500'}>
+                  <span className="text-dark-300">Статус:</span>
+                  <span className={device.connected ? 'text-green-400' : 'text-gray-400'}>
                     {device.connected ? 'Активно' : 'Неактивно'}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sage-600 dark:text-sage-400">Последняя синхронизация:</span>
-                  <span className="text-sage-900 dark:text-sage-50">
+                  <span className="text-dark-300">Последняя синхронизация:</span>
+                  <span className="text-dark-50">
                     {new Date(device.lastSync).toLocaleDateString('ru-RU')}
                   </span>
                 </div>
@@ -178,36 +198,36 @@ export function DeviceIntegrationComponent() {
 
       {/* Модальное окно добавления устройства */}
       {showAddDevice && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-sage-800 rounded-xl p-6 w-full max-w-md">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-sage-900 dark:text-sage-50">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+          <div className="bg-dark-800 rounded-2xl p-8 w-full max-w-lg border border-dark-700 shadow-2xl">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-dark-50">
                 Подключить устройство
               </h3>
               <button
                 onClick={() => setShowAddDevice(false)}
-                className="text-sage-400 hover:text-sage-600"
+                className="p-2 text-dark-400 hover:text-dark-200 hover:bg-dark-700 rounded-lg transition-colors"
               >
-                ✕
+                <X className="w-6 h-6" />
               </button>
             </div>
             
-            <div className="space-y-3">
+            <div className="space-y-4">
               {(['apple_watch', 'oura', 'whoop', 'fitbit'] as const).map((type) => (
                 <button
                   key={type}
                   onClick={() => handleConnectDevice(type)}
-                  className="w-full p-4 rounded-lg border border-sage-200 dark:border-sage-700 hover:border-sage-300 dark:hover:border-sage-600 transition-colors text-left"
+                  className="w-full p-6 rounded-2xl border-2 border-dark-600 hover:border-primary-400 bg-gradient-to-br from-dark-800 to-dark-900 hover:from-dark-700 hover:to-dark-800 transition-all duration-300 hover:shadow-lg text-left"
                 >
                   <div className="flex items-center">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center mr-3 ${getDeviceColor(type)}`}>
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mr-4 ${getDeviceColor(type)}`}>
                       {getDeviceIcon(type)}
                     </div>
                     <div>
-                      <div className="font-medium text-sage-900 dark:text-sage-50">
+                      <div className="font-bold text-lg text-dark-50 mb-1">
                         {getDeviceName(type)}
                       </div>
-                      <div className="text-sm text-sage-600 dark:text-sage-400">
+                      <div className="text-sm text-dark-300">
                         {type === 'apple_watch' && 'Отслеживание активности и пульса'}
                         {type === 'oura' && 'Мониторинг сна и восстановления'}
                         {type === 'whoop' && 'Анализ нагрузки и восстановления'}
@@ -219,10 +239,10 @@ export function DeviceIntegrationComponent() {
               ))}
             </div>
             
-            <div className="mt-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="mt-8 p-4 bg-blue-900/30 rounded-2xl border border-blue-800/50">
               <div className="flex items-start">
-                <AlertCircle className="w-5 h-5 text-blue-500 mr-2 mt-0.5" />
-                <div className="text-sm text-blue-700 dark:text-blue-300">
+                <AlertCircle className="w-6 h-6 text-blue-400 mr-3 mt-0.5" />
+                <div className="text-sm text-blue-300">
                   <strong>Примечание:</strong> Интеграция с устройствами находится в разработке. 
                   Данные будут синхронизироваться автоматически после подключения.
                 </div>

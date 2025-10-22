@@ -145,6 +145,7 @@ export const deviceAPI = {
     const newDevice: DeviceIntegration = {
       ...device,
       id: `${userId}-${device.type}-${Date.now()}`,
+      userId,
       lastSync: new Date().toISOString(),
     };
     
@@ -153,6 +154,13 @@ export const deviceAPI = {
     localStorage.setItem('emotrack-devices', JSON.stringify(devices));
     
     return newDevice;
+  },
+
+  // Удалить устройство
+  deleteDevice: async (userId: string, deviceId: string): Promise<void> => {
+    const devices = JSON.parse(localStorage.getItem('emotrack-devices') || '[]');
+    const filteredDevices = devices.filter((d: DeviceIntegration) => d.id !== deviceId);
+    localStorage.setItem('emotrack-devices', JSON.stringify(filteredDevices));
   },
 };
 
@@ -164,12 +172,81 @@ export const recommendationAPI = {
     const checkUps = await checkUpAPI.getCheckUpsByPeriod(userId, 7);
     const recommendations: Recommendation[] = [];
     
+    // Всегда показываем базовые рекомендации
+    const baseRecommendations: Recommendation[] = [
+      {
+        id: '1',
+        title: 'Утренняя медитация',
+        description: 'Начните день с 5-минутной медитации для настройки на позитивный лад',
+        category: 'mindfulness',
+        priority: 'high',
+        completed: false,
+      },
+      {
+        id: '2',
+        title: 'Прогулка на свежем воздухе',
+        description: '15-минутная прогулка поможет повысить уровень энергии и улучшить настроение',
+        category: 'exercise',
+        priority: 'medium',
+        completed: false,
+      },
+      {
+        id: '3',
+        title: 'Правильное питание',
+        description: 'Съешьте порцию овощей и фруктов для поддержания энергии в течение дня',
+        category: 'nutrition',
+        priority: 'medium',
+        completed: false,
+      },
+      {
+        id: '4',
+        title: 'Качественный сон',
+        description: 'Ложитесь спать в одно и то же время для лучшего восстановления',
+        category: 'sleep',
+        priority: 'high',
+        completed: false,
+      },
+      {
+        id: '5',
+        title: 'Общение с близкими',
+        description: 'Позвоните или встретьтесь с друзьями для поддержания социальных связей',
+        category: 'social',
+        priority: 'low',
+        completed: false,
+      },
+      {
+        id: '6',
+        title: 'Дыхательные упражнения',
+        description: 'Попробуйте технику 4-7-8 для снижения стресса и тревожности',
+        category: 'mindfulness',
+        priority: 'medium',
+        completed: false,
+      },
+      {
+        id: '7',
+        title: 'Физическая активность',
+        description: 'Выполните 20-минутную зарядку или йогу для поддержания тонуса',
+        category: 'exercise',
+        priority: 'medium',
+        completed: false,
+      },
+      {
+        id: '8',
+        title: 'Время для себя',
+        description: 'Выделите 30 минут на любимое хобби или просто отдых',
+        category: 'mindfulness',
+        priority: 'low',
+        completed: false,
+      }
+    ];
+    
+    // Добавляем персонализированные рекомендации на основе чек-апов
     if (checkUps.length > 0) {
       const lastCheckUp = checkUps[checkUps.length - 1];
       
       if (lastCheckUp.mood < 5) {
-        recommendations.push({
-          id: '1',
+        baseRecommendations.push({
+          id: '9',
           title: 'Медитация для поднятия настроения',
           description: 'Попробуйте 10-минутную медитацию для улучшения эмоционального состояния',
           category: 'mindfulness',
@@ -179,21 +256,21 @@ export const recommendationAPI = {
       }
       
       if (lastCheckUp.energy < 5) {
-        recommendations.push({
-          id: '2',
-          title: 'Прогулка на свежем воздухе',
-          description: '15-минутная прогулка поможет повысить уровень энергии',
+        baseRecommendations.push({
+          id: '10',
+          title: 'Энергетическая зарядка',
+          description: 'Выполните быстрые упражнения для повышения уровня энергии',
           category: 'exercise',
-          priority: 'medium',
+          priority: 'high',
           completed: false,
         });
       }
       
       if (lastCheckUp.stress > 7) {
-        recommendations.push({
-          id: '3',
-          title: 'Дыхательные упражнения',
-          description: 'Попробуйте технику 4-7-8 для снижения стресса',
+        baseRecommendations.push({
+          id: '11',
+          title: 'Техники релаксации',
+          description: 'Попробуйте прогрессивную мышечную релаксацию для снятия напряжения',
           category: 'mindfulness',
           priority: 'high',
           completed: false,
@@ -201,6 +278,6 @@ export const recommendationAPI = {
       }
     }
     
-    return recommendations;
+    return baseRecommendations;
   },
 };

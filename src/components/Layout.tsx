@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ThemeToggle } from './ThemeToggle';
 import { Heart, History, BarChart3, Settings, LogOut, Menu, X, Smartphone, Lightbulb, Calendar } from 'lucide-react';
 import { useState } from 'react';
 
@@ -19,7 +18,7 @@ export function Layout({ children }: LayoutProps) {
     { name: 'История', href: '/history', icon: History },
     { name: 'Аналитика', href: '/analytics', icon: BarChart3 },
     { name: 'Устройства', href: '/devices', icon: Smartphone },
-    { name: 'Советы', href: '/recommendations', icon: Lightbulb },
+    { name: 'Рекомендации', href: '/recommendations', icon: Lightbulb },
     { name: 'Календарь', href: '/calendar', icon: Calendar },
     { name: 'Настройки', href: '/settings', icon: Settings },
   ];
@@ -63,8 +62,8 @@ export function Layout({ children }: LayoutProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
                         isActive(item.href)
-                          ? 'bg-sage-100 dark:bg-sage-700 text-sage-900 dark:text-sage-50'
-                          : 'text-sage-600 dark:text-sage-400 hover:bg-sage-50 dark:hover:bg-sage-800'
+                          ? 'bg-primary-600 text-white'
+                          : 'text-dark-300 hover:bg-dark-700'
                       }`}
                     >
                       <Icon className="w-5 h-5 mr-3" />
@@ -74,10 +73,10 @@ export function Layout({ children }: LayoutProps) {
                 })}
               </nav>
               
-              <div className="mt-6 pt-6 border-t border-sage-200 dark:border-sage-700">
+              <div className="mt-6 pt-6 border-t border-dark-700">
                 <button
                   onClick={logout}
-                  className="w-full flex items-center px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                  className="w-full flex items-center px-3 py-2 text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
                 >
                   <LogOut className="w-5 h-5 mr-3" />
                   Выйти
@@ -128,7 +127,6 @@ export function Layout({ children }: LayoutProps) {
                   <div className="font-medium text-sage-900 dark:text-sage-50">{user.name}</div>
                   <div className="text-sm text-sage-600 dark:text-sage-400">{user.email}</div>
                 </div>
-                <ThemeToggle />
               </div>
               <button
                 onClick={logout}
@@ -159,7 +157,6 @@ export function Layout({ children }: LayoutProps) {
               </div>
               <span className="font-bold text-dark-50 text-lg">EmoTrack</span>
             </div>
-            <ThemeToggle />
           </div>
         </div>
 

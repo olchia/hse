@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Layout } from './components/Layout';
@@ -13,11 +13,6 @@ import { CalendarPage } from './pages/CalendarPage';
 import { SettingsPage } from './pages/SettingsPage';
 
 function App() {
-  useEffect(() => {
-    // Устанавливаем тёмную тему по умолчанию
-    const root = window.document.documentElement;
-    root.classList.add('dark');
-  }, []);
 
   return (
     <AuthProvider>

@@ -55,6 +55,7 @@ export interface Theme {
 
 export interface DeviceIntegration {
   id: string;
+  userId: string;
   name: string;
   type: 'apple_watch' | 'oura' | 'whoop' | 'fitbit';
   connected: boolean;

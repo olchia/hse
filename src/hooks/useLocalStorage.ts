@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(() => {
@@ -24,18 +24,3 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   return [storedValue, setValue] as const;
 }
 
-export function useTheme() {
-  const [theme, setTheme] = useLocalStorage<{ mode: 'light' | 'dark' }>('emotrack-theme', { mode: 'dark' });
-  
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme.mode);
-  }, [theme.mode]);
-
-  const toggleTheme = () => {
-    setTheme(prev => ({ ...prev, mode: prev.mode === 'light' ? 'dark' : 'light' }));
-  };
-
-  return { theme, toggleTheme };
-}

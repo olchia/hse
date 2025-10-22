@@ -7,15 +7,15 @@
   * {
     @apply border-dark-700;
   }
-  
+
   body {
     @apply bg-dark-900 text-dark-50;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  /* Тёмная тема по умолчанию */
+
+  /* Тёмная тема */
   html {
     color-scheme: dark;
   }
